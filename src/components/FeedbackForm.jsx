@@ -6,7 +6,7 @@ import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackForm() {
   const [text, setText] = useState("");
-  const [rating, setRaiting] = useState(10);
+  const [rating, setRating] = useState(10);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [message, setMessage] = useState("");
 
@@ -17,7 +17,7 @@ function FeedbackForm() {
     if (feedbackEdit.edit === true) {
       setBtnDisabled(false);
       setText(feedbackEdit.item.text);
-      setRaiting(feedbackEdit.item.rating);
+      setRating(feedbackEdit.item.rating);
     }
   }, [feedbackEdit]);
 
@@ -38,18 +38,21 @@ function FeedbackForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (text.trim().length > 10) {
       const newFeedback = {
         text,
         rating,
       };
 
-      if ((feedbackEdit.edit = true)) {
+      if (feedbackEdit.edit === true) {
         updateFeedback(feedbackEdit.item.id, newFeedback);
       } else {
         addFeedback(newFeedback);
       }
 
+      setBtnDisabled(true);
+      setRating(10);
       setText("");
     }
   };
@@ -58,7 +61,7 @@ function FeedbackForm() {
     <Card>
       <form onSubmit={handleSubmit}>
         <h2>How would you rate your service with us?</h2>
-        <RatingSelect select={(rating) => setRaiting(rating)} />
+        <RatingSelect select={(rating) => setRating(rating)} />
         <div className="input-group">
           <input
             onChange={handleTextChange}
